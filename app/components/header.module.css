@@ -1,0 +1,286 @@
+/* components/Header.module.css */
+.header {
+  position: relative;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 96.5%;
+  height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 0 20px;
+  z-index: 1000;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.routeName {
+  width: 200px;
+}
+
+.linksContainer {
+  display: flex;
+  align-items: center;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+}
+
+.textField {
+  width: 250px;
+  height: 15px;
+}
+
+.hover {
+  width: 100px;
+  margin-left: 20px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.hover:before {
+  content: "";
+  background: linear-gradient(
+    135deg,
+    #fd1d1d,
+    #d62976,
+    #fa7e1e,
+    #feda75,
+    #48ff00,
+    #00ffd5,
+    #4f5bd5,
+    #7a00ff,
+    #962fbf,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(2px);
+  width: 102%;
+  height: 108%;
+  animation: moving-gradient 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.hover:active {
+  color: #000;
+}
+
+.hover:active:after {
+  opacity: 0;
+}
+
+.hover:hover:before {
+  opacity: 1;
+}
+
+.hover:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes moving-gradient {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.hover2 {
+  width: 100px;
+  margin-left: 20px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: #000000;
+  border: 1px black solid;
+  background-color: #ffffff;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.hover2:before {
+  content: "";
+  background: linear-gradient(
+    135deg,
+    #fd1d1d,
+    #d62976,
+    #fa7e1e,
+    #feda75,
+    #48ff00,
+    #00ffd5,
+    #4f5bd5,
+    #7a00ff,
+    #962fbf,
+    #ff0000
+  );
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: 102%;
+  height: 108%;
+  animation: moving-gradient 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 10px;
+}
+
+.hover2:active {
+  color: #ffffff;
+}
+
+.hover2:active:after {
+  opacity: 0;
+}
+
+.hover2:hover:before {
+  opacity: 1;
+}
+
+.hover2:after {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes moving-gradient {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 400% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.glowingButton {
+  --m: 0.2rem;
+  --red: #ff6565;
+  --pink: #ff64f9;
+  --purple: #6b5fff;
+  --blue: #4d8aff;
+  --green: #5bff89;
+  --yellow: #ffee55;
+  --orange: #ff6d1b;
+
+  border: calc(0.08 * var(--m)) solid transparent;
+  position: relative;
+  color: #f3f3f3;
+  font-family: "Space Grotesk", sans-serif;
+  border-radius: calc(0.7 * var(--m));
+  padding: calc(0.5 * var(--m)) calc(1 * var(--m));
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 20px;
+  width: 100px;
+  margin-top: 0px;
+  padding-top: 11px;
+  margin-left: 20px;
+  height: 43px;
+  font-size: 16px;
+  border-radius: 10px;
+
+  background: linear-gradient(#121213, #121213),
+    linear-gradient(#121213 50%, rgba(18, 18, 19, 0.6) 80%, rgba(18, 18, 19, 0)),
+    linear-gradient(
+      90deg,
+      var(--orange),
+      var(--yellow),
+      var(--green),
+      var(--blue),
+      var(--purple),
+      var(--pink),
+      var(--red)
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box, border-box;
+  background-size: 200%;
+  animation: glowingAnimate 2s infinite linear;
+}
+
+.glowingButton::before {
+  content: "";
+  background: linear-gradient(
+    90deg,
+    var(--orange),
+    var(--yellow),
+    var(--green),
+    var(--blue),
+    var(--purple),
+    var(--pink),
+    var(--red)
+  );
+  height: 30%;
+  width: 100%;
+  position: absolute;
+  bottom: -5%;
+  z-index: -5;
+  background-size: 200%;
+  animation: glowingAnimate 2s infinite linear;
+  filter: blur(3px);
+}
+
+.glowingButton:hover,
+.glowingButton:hover::before {
+  animation: glowingAnimate 0.5s infinite linear;
+}
+
+@keyframes glowingAnimate {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .glowingButton {
+    --m: 1rem;
+  }
+}
