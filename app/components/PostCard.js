@@ -129,7 +129,12 @@ const PostCard = ({ post }) => {
             </div>
             <div className={styles.contentContainer}>
               <span className={styles.metaItem}>
-                <User size={16} className={styles.metaIcon} />{" "}
+                <User
+                  size={16}
+                  style={{ marginLeft: "0" }}
+                  marginLeft={0}
+                  className={styles.metaIcon}
+                />{" "}
                 {post.displayuser}
               </span>
               <h2

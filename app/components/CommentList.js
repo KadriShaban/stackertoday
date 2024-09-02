@@ -120,12 +120,15 @@ export default function CommentList({ postId }) {
     return comments
       .filter((comment) => comment && comment.parent_id === parentId)
       .map((comment) => (
-        <Box key={comment.id} className={`comment-box depth-${depth}`}>
-          <div className="comment-meta">
-            <span className="comment-author">
+        <Box
+          key={comment.id}
+          className={`${styles.commentBox} ${styles[`depth${depth}`]}`}
+        >
+          <div className={styles.commentMeta}>
+            <span className={styles.commentAuthor}>
               {comment.display_name || "Anonymous"}
             </span>
-            <span className="comment-date">
+            <span className={styles.commentDate}>
               {new Date(comment.created_at).toLocaleDateString("en-US", {
                 day: "2-digit",
                 month: "long",
@@ -134,34 +137,34 @@ export default function CommentList({ postId }) {
             </span>
           </div>
           <Typography variant="body1">{comment.content}</Typography>
-          <div className="vote-container">
+          <div className={styles.voteContainer}>
             <button
-              className={`vote-button upvote ${
-                userVotes[comment.id] === 1 ? "active" : ""
+              className={`${styles.voteButton} ${styles.upvote} ${
+                userVotes[comment.id] === 1 ? styles.active : ""
               }`}
               onClick={() => handleVote(comment.id, 1)}
             >
               <ThumbUp />
             </button>
-            <span className="vote-count">{comment.upvote}</span>
+            <span className={styles.voteCount}>{comment.upvote}</span>
             <button
-              className={`vote-button downvote ${
-                userVotes[comment.id] === -1 ? "active" : ""
+              className={`${styles.voteButton} ${styles.downvote} ${
+                userVotes[comment.id] === -1 ? styles.active : ""
               }`}
               onClick={() => handleVote(comment.id, -1)}
             >
               <ThumbDown />
             </button>
-            <span className="vote-count">{comment.downvote}</span>
+            <span className={styles.voteCount}>{comment.downvote}</span>
             <button
-              className="reply-button"
+              className={styles.replyButton}
               onClick={() => setReplyingTo(comment.id)}
             >
               Reply
             </button>
           </div>
           {replyingTo === comment.id && (
-            <Box className="reply-form">
+            <Box className={styles.replyForm}>
               <TextField
                 multiline
                 rows={3}
@@ -169,19 +172,22 @@ export default function CommentList({ postId }) {
                 value={replyContent}
                 onChange={(e) => setReplyContent(e.target.value)}
                 fullWidth
-                variant="outlined"
+                variant="standard"
+                className={styles.replyTextArea}
               />
               <Button
                 variant="contained"
                 color="primary"
                 onClick={() => handleReply(comment.id)}
-                className="submit-reply"
+                className={styles.submitReply}
               >
                 Submit Reply
               </Button>
             </Box>
           )}
-          <Box className="replies">{renderComments(comment.id, depth + 1)}</Box>
+          <Box className={styles.replies}>
+            {renderComments(comment.id, depth + 1)}
+          </Box>
         </Box>
       ));
   };
@@ -205,7 +211,7 @@ export default function CommentList({ postId }) {
 
   return (
     <Box className="commentList">
-      <Typography variant="h3">Comments</Typography>
+      <Typography variant="h5">Comments</Typography>
       {error && <div className="errorMessage">{error}</div>}
       <AddComment postId={postId} onCommentAdded={handleCommentAdded} />
       {comments.length === 0 ? (

@@ -156,7 +156,7 @@ const PostContainer = () => {
       </div>
       <Box
         position="absolute"
-        top="1125px"
+        top={{ xs: "300px", md: "1000px", lg: "1200px" }}
         color="black"
         justifyContent="center"
         mt={4}

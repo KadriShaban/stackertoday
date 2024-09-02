@@ -1,49 +1,50 @@
 .postCardWrapper {
   position: relative;
   width: fit-content;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  perspective: 1000px;
 }
 
 .postCard {
-  background-color: white;
-  padding: 10px;
+  background: white;
+  padding: 16px;
   display: flex;
   align-items: center;
   flex-direction: row;
-  width: 800px;
-  padding-top: 20px;
-  padding-bottom: 30px;
+  width: 700px;
   position: relative;
   overflow: hidden;
-  border-radius: 20px 20px 0px 0px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.postCard::after {
+.postCard:hover {
+  transform: translateY(-3px) rotateX(1deg);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.postCard::before {
   content: "";
   position: absolute;
+  bottom: 0;
   left: 0;
   right: 0;
-  bottom: 0;
-  height: 3px;
-  background-image: linear-gradient(
-    to right,
-    #ff4545,
-    #00ff99,
-    #006aff,
-    #ff0095,
-    #ff4545
-  );
-  background-size: 200% 100%;
-  animation: moveGradient 3s linear infinite;
+  height: 4px;
+  background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+  background-size: 300% 100%;
+  animation: gradientShift 5s ease infinite;
 }
 
-@keyframes moveGradient {
+@keyframes gradientShift {
   0% {
-    background-position: 0% 0%;
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
   100% {
-    background-position: 200% 0%;
+    background-position: 0% 50%;
   }
 }
 
@@ -51,28 +52,35 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-bottom: 8px;
-  width: 75px;
-  min-width: 75px;
+  margin-right: 16px;
+  width: 60px;
+  min-width: 60px;
 }
 
 .voteButton {
   display: inline-block;
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.2s ease, color 0.2s ease;
   cursor: pointer;
   background: none;
   border: none;
-  color: #474747;
+  color: #7c7c7c;
+  font-size: 20px;
+}
+
+.voteButton:hover {
+  transform: scale(1.15);
+  color: #3498db;
 }
 
 .voteCount {
-  margin: 8px 0;
+  margin: 6px 0;
   font-weight: bold;
-  color: #3d3d3d;
+  color: #2c3e50;
+  font-size: 16px;
 }
 
 .imageContainer {
-  margin-right: 20px;
+  margin-right: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,6 +91,12 @@
   height: 85px;
   object-fit: cover;
   border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.image:hover {
+  transform: scale(1.03);
 }
 
 .contentContainer {
@@ -90,41 +104,44 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 100%;
+  flex-grow: 1;
 }
 
 .linkContainer {
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: 4px;
-  min-height: 14px;
-  color: #6b6b6b;
-  font-weight: 300;
+  gap: 6px;
+  min-height: 12px;
+  color: #718096;
+  font-weight: 400;
+  margin-bottom: 4px;
 }
 
 .link {
-  color: #5a5a5a;
+  color: #4a5568;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 12px;
+  transition: color 0.2s ease;
 }
 
 .link:hover {
+  color: #3498db;
   text-decoration: underline;
 }
 
 .title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 400;
-  margin: 5px 0;
-  flex-grow: 1;
-  color: black;
+  margin: 6px 0;
+  color: #5f5f5f;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+  cursor: pointer;
 }
 
-.metaItem {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 5px;
+.title:hover {
+  color: #3498db;
 }
 
 .metaInfo {
@@ -132,10 +149,27 @@
   flex-wrap: wrap;
   align-items: center;
   flex-direction: row;
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 8px;
+  font-size: 0.75rem;
+  color: #718096;
+  margin: 6px 0;
   gap: 10px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 4px;
+  background-color: #ffffff;
+  padding: 6px 0px;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.metaItem:hover {
+  background-color: #ffffff;
 }
 
 .linkIconGlobe,
@@ -145,29 +179,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   width: auto;
-  height: 14px;
-  color: #6b6b6b;
-}
-
-.linkIconGlobe {
-  margin-right: 5px;
-}
-
-.linkIconClock,
-.linkIconTime {
-  padding-top: 1px;
-  margin-left: 7px;
+  height: 12px;
+  color: #4a5568;
 }
 
 .commentInfo {
   display: flex;
   align-items: center;
-  color: #6b7280;
-  font-size: 0.875rem;
-  margin-top: auto;
-  padding-top: 0;
+  color: #718096;
+  font-size: 0.75rem;
+
+  padding-top: 4px;
+  padding-bottom: 2px;
+  padding-left: 0px;
+
+  background-color: #ffffff;
+  border-radius: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.commentInfo:hover {
+  background-color: #ffffff;
 }
 
 .commentInfo svg {
@@ -178,24 +212,38 @@
   .postCard {
     flex-direction: column;
     width: 400px;
+    max-width: 350px;
+    padding: 14px;
   }
 
   .imageContainer {
     margin-right: 0;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
   }
 
   .contentContainer {
-    align-items: center;
-    text-align: center;
+    align-items: flex-start;
+    text-align: left;
   }
 
   .metaInfo {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .voteContainer {
     flex-direction: row;
-    margin-bottom: 16px;
+    justify-content: center;
+    margin-bottom: 14px;
+    width: 100%;
+  }
+
+  .voteButton {
+    margin: 0 8px;
   }
 }
