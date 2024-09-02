@@ -1,0 +1,98 @@
+.postContainer {
+  position: absolute;
+  top: 250px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 30px; /* Centers the element horizontally */
+}
+.sortbuttons {
+  position: absolute;
+  top: 185px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: auto;
+}
+
+.sortOptions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.sortOptions button,
+.timeFilters button {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: rgb(99, 99, 99);
+  transition: all 0.5s ease;
+}
+
+.sortOptions button:hover,
+.timeFilters button:hover {
+  background-color: rgb(36, 36, 36);
+  color: white;
+}
+
+.sortOptions button::after,
+.timeFilters button::after {
+  content: "";
+  display: block;
+  height: 3px;
+  background-image: linear-gradient(
+    to right,
+    #ff4545,
+    #00ff99,
+    #006aff,
+    #ff0095,
+    #ff4545
+  );
+  background-size: 200% 100%;
+  animation: moveGradient 3s linear infinite;
+  border-radius: 0px 0px 10px 10px;
+  margin-top: 8px;
+}
+
+@keyframes moveGradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}
+
+.timeFilters {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.activeSortButton,
+.activeTimeButton {
+  background-color: rgb(36, 36, 36) !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .sortbuttons {
+    display: flex;
+    flex-direction: column;
+  }
+  .postContainer {
+    position: absolute;
+    top: 400px;
+  }
+}

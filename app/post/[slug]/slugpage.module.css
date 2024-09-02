@@ -1,0 +1,17 @@
+/* slugpage.module.css */
+.totalpage {
+  background-color: #ffffff;
+  border: none;
+}
+
+.slugPageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  position: absolute;
+  background-color: #ffffff;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
