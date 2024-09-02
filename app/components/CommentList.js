@@ -131,7 +131,7 @@ export default function CommentList({ postId }) {
             <span className={styles.commentDate}>
               {new Date(comment.created_at).toLocaleDateString("en-US", {
                 day: "2-digit",
-                month: "long",
+                month: "short",
                 year: "numeric",
               })}
             </span>

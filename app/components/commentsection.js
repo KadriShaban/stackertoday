@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { User, MessageSquare, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -99,7 +101,12 @@ const ExampleCommentSection = ({ postId }) => {
             ...comment,
             replies: [
               ...comment.replies,
-              { id: Math.random(), content, user: { name: "Current User" }, replies: [] },
+              {
+                id: Math.random(),
+                content,
+                user: { name: "Current User" },
+                replies: [],
+              },
             ],
           };
         } else if (comment.replies.length > 0) {

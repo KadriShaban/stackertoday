@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { TextField, Button, Typography, Box } from "@mui/material";
 import { Google as GoogleIcon } from "@mui/icons-material";

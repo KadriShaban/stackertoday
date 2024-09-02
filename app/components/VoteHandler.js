@@ -1,5 +1,5 @@
 // components/VoteHandler.js
-
+"use client";
 import { useState } from "react";
 import { IconButton, Typography } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";

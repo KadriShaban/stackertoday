@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import styles from "./DownvoteButton.module.css";
