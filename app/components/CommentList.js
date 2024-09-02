@@ -1,41 +1,39 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import {
   Box,
   Typography,
-  IconButton,
-  CircularProgress,
   Button,
+  CircularProgress,
+  TextField,
 } from "@mui/material";
-import {
-  ThumbUp,
-  ThumbUpOutlined,
-  ThumbDown,
-  ThumbDownOutlined,
-} from "@mui/icons-material";
+import { ThumbUp, ThumbDown } from "@mui/icons-material";
 import AddComment from "./AddComment";
+import styles from "./CommentList.module.css";
 
 export default function CommentList({ postId }) {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userVotes, setUserVotes] = useState({});
   const [replyingTo, setReplyingTo] = useState(null);
-  const [replyContent, setReplyContent] = useState({});
+  const [replyContent, setReplyContent] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchComments() {
+    fetchComments();
+  }, [postId]);
+
+  async function fetchComments() {
+    try {
       const { data: comments, error } = await supabase
         .from("comments")
-        .select("*, user_profiles(username)")
+        .select("*")
         .eq("post_id", postId)
         .order("created_at", { ascending: true });
 
-      if (error) {
-        console.error(error);
-        return;
-      }
+      if (error) throw error;
 
       setComments(comments);
 
@@ -43,10 +41,12 @@ export default function CommentList({ postId }) {
       setUserVotes(storedVotes);
 
       setLoading(false);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+      setError("Failed to load comments. Please try again later.");
+      setLoading(false);
     }
-
-    fetchComments();
-  }, [postId]);
+  }
 
   const handleVote = async (commentId, voteType) => {
     try {
@@ -59,23 +59,16 @@ export default function CommentList({ postId }) {
       let newDownvoteCount = comment.downvote;
 
       if (userVotes[commentId] === voteType) {
-        if (voteType === 1) {
-          newUpvoteCount -= 1;
-        } else {
-          newDownvoteCount -= 1;
-        }
+        if (voteType === 1) newUpvoteCount -= 1;
+        else newDownvoteCount -= 1;
         delete updatedUserVotes[commentId];
       } else {
         if (voteType === 1) {
           newUpvoteCount += 1;
-          if (userVotes[commentId] === -1) {
-            newDownvoteCount -= 1;
-          }
+          if (userVotes[commentId] === -1) newDownvoteCount -= 1;
         } else {
           newDownvoteCount += 1;
-          if (userVotes[commentId] === 1) {
-            newUpvoteCount -= 1;
-          }
+          if (userVotes[commentId] === 1) newUpvoteCount -= 1;
         }
         updatedUserVotes[commentId] = voteType;
       }
@@ -97,135 +90,104 @@ export default function CommentList({ postId }) {
       setUserVotes(updatedUserVotes);
     } catch (error) {
       console.error("Error updating votes:", error);
+      setError("Failed to update vote. Please try again.");
     }
   };
 
-  const handleReplyChange = (commentId, value) => {
-    setReplyContent((prev) => ({
-      ...prev,
-      [commentId]: value,
-    }));
-  };
+  const handleReply = async (parentId) => {
+    if (replyContent.trim() === "") return;
 
-  const handleReplySubmit = async (parentId) => {
-    const content = replyContent[parentId];
-    if (!content) return;
+    try {
+      const { data, error } = await supabase
+        .from("comments")
+        .insert([
+          { content: replyContent, post_id: postId, parent_id: parentId },
+        ])
+        .select();
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+      if (error) throw error;
 
-    const { error } = await supabase.from("comments").insert({
-      content,
-      post_id: postId,
-      parent_id: parentId,
-      user_id: user.id,
-    });
-
-    if (error) {
-      console.error("Error submitting reply:", error);
-      return;
+      setComments((prevComments) => [...prevComments, ...data]);
+      setReplyContent("");
+      setReplyingTo(null);
+    } catch (error) {
+      console.error("Error adding reply:", error);
+      setError("Failed to add reply. Please try again.");
     }
-
-    setReplyContent((prev) => ({
-      ...prev,
-      [parentId]: "",
-    }));
-
-    refreshComments();
   };
 
-  const refreshComments = async () => {
-    const { data: comments, error } = await supabase
-      .from("comments")
-      .select("*, user_profiles(username)")
-      .eq("post_id", postId)
-      .order("created_at", { ascending: true });
-
-    if (error) {
-      console.error(error);
-      return;
-    }
-
-    setComments(comments);
-  };
-
-  const renderComments = (parentId = null) => {
+  const renderComments = (parentId = null, depth = 0) => {
     return comments
       .filter((comment) => comment && comment.parent_id === parentId)
       .map((comment) => (
-        <Box
-          key={comment.id}
-          sx={{
-            borderBottom: parentId ? "none" : "1px solid #ddd",
-            padding: parentId ? "10px 0 10px 20px" : "10px 0",
-            marginLeft: parentId ? "20px" : "0",
-          }}
-        >
-          {/* Comment content */}
-          <Typography variant="body1" style={{ marginBottom: "0.5rem" }}>
-            {comment.content}
-          </Typography>
-          {/* Display username */}
-          <Typography variant="body2" color="textSecondary">
-            {comment.user_profiles.username || "Unknown User"}
-          </Typography>
-          {/* Vote and reply buttons */}
-          <Box display="flex" alignItems="center">
-            <IconButton
+        <Box key={comment.id} className={`comment-box depth-${depth}`}>
+          <div className="comment-meta">
+            <span className="comment-author">
+              {comment.display_name || "Anonymous"}
+            </span>
+            <span className="comment-date">
+              {new Date(comment.created_at).toLocaleDateString("en-US", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+          </div>
+          <Typography variant="body1">{comment.content}</Typography>
+          <div className="vote-container">
+            <button
+              className={`vote-button upvote ${
+                userVotes[comment.id] === 1 ? "active" : ""
+              }`}
               onClick={() => handleVote(comment.id, 1)}
-              color={userVotes[comment.id] === 1 ? "primary" : "default"}
             >
-              {userVotes[comment.id] === 1 ? <ThumbUp /> : <ThumbUpOutlined />}
-            </IconButton>
-            <Typography variant="caption" style={{ marginRight: "15px" }}>
-              {comment.upvote} upvotes
-            </Typography>
-            <IconButton
+              <ThumbUp />
+            </button>
+            <span className="vote-count">{comment.upvote}</span>
+            <button
+              className={`vote-button downvote ${
+                userVotes[comment.id] === -1 ? "active" : ""
+              }`}
               onClick={() => handleVote(comment.id, -1)}
-              color={userVotes[comment.id] === -1 ? "secondary" : "default"}
             >
-              {userVotes[comment.id] === -1 ? (
-                <ThumbDown />
-              ) : (
-                <ThumbDownOutlined />
-              )}
-            </IconButton>
-            <Typography variant="caption">
-              {comment.downvote} downvotes
-            </Typography>
-            <Button
-              variant="text"
+              <ThumbDown />
+            </button>
+            <span className="vote-count">{comment.downvote}</span>
+            <button
+              className="reply-button"
               onClick={() => setReplyingTo(comment.id)}
-              style={{ marginLeft: "auto" }}
             >
               Reply
-            </Button>
-          </Box>
-          {/* Reply form */}
+            </button>
+          </div>
           {replyingTo === comment.id && (
-            <Box mt={2}>
-              <textarea
-                rows="3"
+            <Box className="reply-form">
+              <TextField
+                multiline
+                rows={3}
                 placeholder="Write your reply..."
-                value={replyContent[comment.id] || ""}
-                onChange={(e) => handleReplyChange(comment.id, e.target.value)}
-                style={{ width: "100%", padding: "10px" }}
+                value={replyContent}
+                onChange={(e) => setReplyContent(e.target.value)}
+                fullWidth
+                variant="outlined"
               />
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => handleReplySubmit(comment.id)}
-                style={{ marginTop: "10px" }}
+                onClick={() => handleReply(comment.id)}
+                className="submit-reply"
               >
                 Submit Reply
               </Button>
             </Box>
           )}
-          {/* Recursive render for nested comments */}
-          {renderComments(comment.id)}
+          <Box className="replies">{renderComments(comment.id, depth + 1)}</Box>
         </Box>
       ));
+  };
+
+  const handleCommentAdded = async () => {
+    await fetchComments();
   };
 
   if (loading) {
@@ -236,17 +198,21 @@ export default function CommentList({ postId }) {
         alignItems="center"
         height="100vh"
       >
-        <CircularProgress color="inherit" style={{ color: "black" }} />
+        <CircularProgress />
       </Box>
     );
   }
 
   return (
-    <Box>
-      {/* Add Comment Form */}
-      <AddComment postId={postId} onCommentAdded={refreshComments} />
-      {/* Render Comments */}
-      {renderComments()}
+    <Box className="commentList">
+      <Typography variant="h3">Comments</Typography>
+      {error && <div className="errorMessage">{error}</div>}
+      <AddComment postId={postId} onCommentAdded={handleCommentAdded} />
+      {comments.length === 0 ? (
+        <Typography>No comments yet. Be the first to comment!</Typography>
+      ) : (
+        renderComments()
+      )}
     </Box>
   );
 }

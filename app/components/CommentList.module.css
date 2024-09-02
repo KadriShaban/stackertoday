@@ -1,150 +1,339 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+
 .commentList {
-  font-family: Arial, sans-serif;
+  font-family: "Inter", sans-serif;
   max-width: 800px;
   margin: 0 auto;
-
-  padding: 20px;
+  padding: 40px;
   background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .commentList h3 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 10px;
+  font-size: 2.2rem;
+  color: #1a202c;
+  margin-bottom: 30px;
+  border-bottom: none;
+  padding-bottom: 15px;
+  position: relative;
+}
+
+.commentList h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 2px;
 }
 
 .comment {
-  background-color: #fff;
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  padding: 15px;
-  margin-bottom: 15px;
-  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  border: none;
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 25px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.comment::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #3498db, #2ecc71);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .comment:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+}
+
+.comment:hover::before {
+  opacity: 1;
 }
 
 .comment p {
-  margin: 0 0 10px 0;
-  line-height: 1.6;
+  margin: 0 0 20px 0;
+  line-height: 1.8;
+  color: #4a5568;
+  font-size: 1rem;
 }
 
 .comment strong {
-  color: #2c3e50;
+  color: #2d3748;
+  font-weight: 600;
 }
 
-.comment button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
+.replyButton {
+  background-color: transparent;
+  color: #3498db;
+  border: 2px solid #3498db;
+  padding: 8px 15px;
+  border-radius: 20px;
   cursor: pointer;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.comment button:hover {
-  background-color: #2980b9;
+.replyButton:hover {
+  background-color: #3498db;
+  color: white;
+}
+
+.replyButton::before {
+  content: "↩";
+  font-size: 1.2rem;
 }
 
 .replyForm {
-  margin-top: 10px;
+  margin-top: 20px;
+  background-color: #edf2f7;
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.replyForm::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #edf2f7;
 }
 
 .replyForm textarea {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
   resize: vertical;
-  min-height: 60px;
-  margin-bottom: 10px;
+  min-height: 100px;
+  margin-bottom: 15px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.replyForm textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
 }
 
 .replyForm button {
-  background-color: #2ecc71;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
 }
 
 .replyForm button:hover {
-  background-color: #27ae60;
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .replies {
-  margin-top: 15px;
+  margin-top: 25px;
+  padding-left: 25px;
+  position: relative;
+}
+
+.replies::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, #3498db, #2ecc71);
+  opacity: 0.5;
 }
 
 .errorMessage {
-  color: #e74c3c;
-  background-color: #fadbd8;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 15px;
+  color: #e53e3e;
+  background-color: #fff5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  border-left: 4px solid #e53e3e;
 }
 
-/* Depth-based indentation */
+/* Depth-based styling with modern flair */
 .depth-0 {
   margin-left: 0;
 }
 .depth-1 {
-  margin-left: 20px;
+  margin-left: 30px;
 }
 .depth-2 {
-  margin-left: 40px;
-}
-.depth-3 {
   margin-left: 60px;
 }
-.depth-4 {
-  margin-left: 80px;
+.depth-3 {
+  margin-left: 90px;
 }
-/* Add more depths if needed */
+.depth-4 {
+  margin-left: 120px;
+}
 
-.comment {
-  /* Styles for individual comments */
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.depth-1::before {
+  background: linear-gradient(180deg, #3498db, #2ecc71);
+}
+.depth-2::before {
+  background: linear-gradient(180deg, #2ecc71, #f39c12);
+}
+.depth-3::before {
+  background: linear-gradient(180deg, #f39c12, #e74c3c);
+}
+.depth-4::before {
+  background: linear-gradient(180deg, #e74c3c, #9b59b6);
 }
 
 .voteContainer {
-  /* Styles for the voting container */
   display: flex;
   align-items: center;
+  margin-top: 15px;
 }
 
-.upvote {
+.voteButton {
+  background: none;
+  border: none;
   cursor: pointer;
-  margin-right: 0.5rem;
+  font-size: 1.5rem;
+  color: #a0aec0;
+  transition: all 0.3s ease;
+  padding: 5px;
 }
 
-.downvote {
-  cursor: pointer;
-  margin-right: 0.5rem;
+.upvote:hover,
+.upvote.active {
+  color: #48bb78;
+}
+.downvote:hover,
+.downvote.active {
+  color: #e53e3e;
 }
 
-.replyForm {
-  /* Styles for the reply form */
-  margin-top: 1rem;
-  padding: 0.5rem;
-  border-top: 1px solid #ddd;
+.voteCount {
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0 10px;
+  min-width: 30px;
+  text-align: center;
 }
 
-.reply {
-  /* Styles for replies */
-  margin-left: 1rem;
-  padding: 0.5rem;
-  border-left: 1px solid #ddd;
+.commentMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+  color: #718096;
 }
 
-.errorMessage {
-  /* Styles for error messages */
-  color: red;
+.commentAuthor {
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.commentDate {
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .commentList {
+    padding: 20px;
+  }
+
+  .comment {
+    padding: 20px;
+  }
+
+  .depth-1,
+  .depth-2,
+  .depth-3,
+  .depth-4 {
+    margin-left: 15px;
+  }
+}
+
+/* Cool hover effect for depth indicators */
+.comment:hover::before {
+  animation: colorShift 2s infinite alternate;
+}
+
+@keyframes colorShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Add a subtle texture to the background */
+.commentList {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Add a slick animation for new comments */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.comment {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Custom scrollbar for textarea */
+.replyForm textarea {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e0 #edf2f7;
+}
+
+.replyForm textarea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.replyForm textarea::-webkit-scrollbar-track {
+  background: #edf2f7;
+}
+
+.replyForm textarea::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+  border-radius: 4px;
+  border: 2px solid #edf2f7;
 }
